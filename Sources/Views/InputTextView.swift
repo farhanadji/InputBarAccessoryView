@@ -63,6 +63,8 @@ open class InputTextView: UITextView {
     }
     
     open var isImagePasteEnabled: Bool = true
+    
+    open var redrawAttachmentsOnOrientationChange: Bool = true
 
     /// A UILabel that holds the InputTextView's placeholder text
     public let placeholderLabel: UILabel = {
@@ -389,8 +391,7 @@ open class InputTextView: UITextView {
     /// Redraws the NSTextAttachments in the NSTextContainer to fit the current bounds
     @objc
     private func redrawTextAttachments() {
-        
-        guard images.count > 0 else { return }
+        guard redrawAttachmentsOnOrientationChange, images.count > 0 else { return }
         let range = NSRange(location: 0, length: attributedText.length)
         attributedText.enumerateAttribute(.attachment, in: range, options: [], using: { value, _, _ -> Void in
             if let attachment = value as? NSTextAttachment, let image = attachment.image {
